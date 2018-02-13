@@ -46,3 +46,4 @@ Thumbs.db
 
 # JSON data
 /data
+/scrape/*.json
