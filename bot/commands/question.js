@@ -14,7 +14,7 @@ module.exports = function(channel, args, cb) {
       if(err) { console.err(err); }
       else {
         channel.send({embed: {
-          color: 3447003,
+          color: 58,
           title: `${data.category} for ${data.value || 'the whole ballgame'}`,
           description: data.round,
           fields: [{
