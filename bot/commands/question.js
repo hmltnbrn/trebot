@@ -1,26 +1,35 @@
-var moment = require('moment');
+const moment = require('moment');
+const upndown = require('upndown');
 
-var db = require('../../db');
+const db = require('../../db');
 
-module.exports = function(bot, channelID, args, cb) {
+module.exports = function(channel, args, cb) {
   db.getRandomQuestion(function(data, err) {
     if(err) {
-      bot.sendMessage({
-        to: channelID,
-        message: "There was an error. Talk to John Wayne."
-      });
+      channel.send("There was an error. Talk to my creater.");
       logger.info(err);
     }
-    bot.sendMessage({
-      to: channelID,
-      message: `${moment(data.air_date).format("MMMM Do, YYYY")} (Episode #${data.show_number})\n${data.round}\n${data.category} for ${data.value || 'the whole ballgame'}\n${data.question}`
+    let und = new upndown();
+    und.convert(data.question, function(err, markdown) {
+      if(err) { console.err(err); }
+      else {
+        channel.send({embed: {
+          color: 3447003,
+          title: `${data.category} for ${data.value || 'the whole ballgame'}`,
+          description: data.round,
+          fields: [{
+            name: "-".repeat(data.round.length),
+            value: markdown
+          }],
+          footer: {
+            text: `${moment(data.air_date).format("MMMM Do, YYYY")} (Episode #${data.show_number})`
+          }
+        }});
+      }
     });
     if(args[2] === '20' || args[2] === '30') {
       setTimeout(() => {
-        bot.sendMessage({
-          to: channelID,
-          message: data.answer
-        });
+        channel.send(data.answer);
         return cb(data.answer, "Responding with question and answer");
       }, parseInt(args[2])*1000);
     }

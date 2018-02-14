@@ -1,16 +1,10 @@
-module.exports = function(bot, channelID, answer, cb) {
+module.exports = function(channel, answer, cb) {
   if(answer) {
-    bot.sendMessage({
-      to: channelID,
-      message: answer
-    });
+    channel.send(answer);
     return cb("Responding with answer");
   }
   else {
-    bot.sendMessage({
-      to: channelID,
-      message: "You need a question first, honey."
-    });
+    channel.send("You need a question first, honey.");
     return cb("No saved question");
   }
 }
