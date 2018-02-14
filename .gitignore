@@ -45,5 +45,7 @@ Thumbs.db
 .env
 
 # JSON data
-/data
-/scrape/*.json
+/data/*.json
+
+# Compiled Python
+*.pyc

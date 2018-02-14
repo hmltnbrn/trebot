@@ -1,3 +1,4 @@
+import sys
 import urllib2
 import json
 import re
@@ -30,8 +31,9 @@ class Show(object):
             for category in round.categories:
                 for clue in category.clues:
                     data.append({
+                        "link": self.link,
                         "air_date": self.air_date,
-                        "show_number": self.show_number,
+                        "show_number": self.show_number.split(" #")[1],
                         "round": round.name,
                         "category": category.name,
                         "value": clue.value,
@@ -82,12 +84,15 @@ class Clue(Category):
         self.question = question
         self.answer = answer
 
-if __name__ == "__main__":
-    link = "http://www.j-archive.com/showgame.php?game_id=5870"
-
+def get(link):
     show = Show(link)
+
+    return show.get_data()
+
+if __name__ == "__main__":
+    show = Show(sys.argv[1]) # first argument is j-archive link to show
 
     data = show.get_data()
 
-    with open('data.json', 'w+') as f:
+    with open('show_data.json', 'w+') as f:
         json.dump(data, f)
