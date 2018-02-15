@@ -14,33 +14,3 @@ exports.getRandomQuestion = function (cb) {
     });
   });
 }
-
-exports.getDate = function (datestring, cb) {
-  MongoClient.connect(process.env.MONGO_URI, function(err, client) {
-    const collection = client.db("jeopardy").collection("public");
-    collection.find({ air_date: datestring }).toArray(function(err, results) {
-      if(err) {
-        console.log(err);
-        client.close();
-        return cb(null, err);
-      }
-      client.close();
-      return cb(results, null);
-    });
-  });
-}
-
-exports.getRound = function (round, cb) {
-  MongoClient.connect(process.env.MONGO_URI, function(err, client) {
-    const collection = client.db("jeopardy").collection("public");
-    collection.find({ round: round }).toArray(function(err, results) {
-      if(err) {
-        console.log(err);
-        client.close();
-        return cb(null, err);
-      }
-      client.close();
-      return cb(results, null);
-    });
-  });
-}

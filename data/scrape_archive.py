@@ -1,9 +1,11 @@
 import sys
+import json
 import show_links
 import show_data
-import json
 
 if __name__ == "__main__":
+    print "Beginning scrape"
+
     first_season = int(sys.argv[1]) # first argument is season to start on
 
     jeopardy_data = []
@@ -16,3 +18,4 @@ if __name__ == "__main__":
 
     with open('jeopardy_data.json', 'w+') as f:
         json.dump(jeopardy_data, f)
+        print "Finished successfully"

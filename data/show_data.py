@@ -2,6 +2,7 @@ import sys
 import urllib2
 import json
 import re
+import datetime
 from bs4 import BeautifulSoup
 
 # {"category":"3-LETTER WORDS",
@@ -10,7 +11,8 @@ from bs4 import BeautifulSoup
 # "value":"$200",
 # "answer":"the ant",
 # "round":"Jeopardy!",
-# "show_number":"4680"}
+# "show_number":"4680",
+# "link": "http://www.j-archive.com/showgame.php?game_id=173"}
 
 class Show(object):
 
@@ -21,9 +23,18 @@ class Show(object):
         self.rounds = self.set_rounds()
 
     def set_rounds(self):
-        first_round = Round("Jeopardy!", self.html.find(id='jeopardy_round').find(class_='round'))
-        second_round = Round("Double Jeopardy!", self.html.find(id='double_jeopardy_round').find(class_='round'))
-        return [first_round, second_round]
+        print self.show_number
+        rounds = []
+        first_round = self.html.find(id='jeopardy_round')
+        second_round = self.html.find(id='double_jeopardy_round')
+        final_round = self.html.find(id='final_jeopardy_round')
+        if first_round:
+            rounds.append(Round("Jeopardy!", first_round))
+        if second_round:
+            rounds.append(Round("Double Jeopardy!", second_round))
+        if final_round:
+            rounds.append(Round("Final Jeopardy!", final_round))
+        return rounds
 
     def get_data(self):
         data = []
@@ -32,7 +43,7 @@ class Show(object):
                 for clue in category.clues:
                     data.append({
                         "link": self.link,
-                        "air_date": self.air_date,
+                        "air_date": datetime.datetime.strptime(self.air_date, '%A, %B %d, %Y').isoformat(),
                         "show_number": self.show_number.split(" #")[1],
                         "round": round.name,
                         "category": category.name,
@@ -54,27 +65,29 @@ class Round(Show):
         cats = self.html.findAll(class_='category')
         clues = self.html.findAll(class_='clue')
         for i in xrange(len(cats)):
-            categories.append(Category(cats[i].find(class_='category_name').find(text=True), clues[i:len(clues):6]))
+            cat_name = cats[i].find(class_='category_name')
+            if cat_name:
+                categories.append(Category(cat_name.find(text=True), clues[i:len(clues):6], self.html if self.name == 'Final Jeopardy!' else None))
         return categories
 
 class Category(Round):
 
-    def __init__(self, name, html):
+    def __init__(self, name, html, answer_div = None):
         self.name = name
         self.html = html
+        self.answer_div = answer_div
         self.clues = self.set_clues()
 
     def set_clues(self):
         clues = []
         for i in xrange(len(self.html)):
-            value = self.html[i].find(class_="clue_value")
-            dd_value = self.html[i].find(class_="clue_value_daily_double")
+            value = self.html[i].find(class_="clue_value") if self.html[i].find(class_="clue_value_daily_double") is None else self.html[i].find(class_="clue_value_daily_double")
             question = self.html[i].find(class_="clue_text")
-            answer_div = self.html[i].find("div")
-            if(value and question and answer_div):
-                clues.append(Clue(value.find(text=True), question.find(text=True), re.search('<em class="correct_response">(.*)</em>', answer_div["onmouseover"]).group(1)))
-            elif(dd_value and question and answer_div):
-                clues.append(Clue(dd_value.find(text=True), question.find(text=True), re.search('<em class="correct_response">(.*)</em>', answer_div["onmouseover"]).group(1)))
+            answer = self.answer_div.find("div") if self.answer_div is not None else self.html[i].find("div")
+            if(value and question and answer):
+                clues.append(Clue(value.find(text=True), question.encode_contents(), re.search('<em class="correct_response">(.*)</em>', answer["onmouseover"]).group(1)))
+            elif(question and answer):
+                clues.append(Clue("", question.encode_contents(), re.search(r'<em class=\\"correct_response\\">(.*)</em>', answer["onmouseover"]).group(1)))
         return clues
 
 class Clue(Category):
@@ -90,9 +103,12 @@ def get(link):
     return show.get_data()
 
 if __name__ == "__main__":
+    print "Generating show data..."
+
     show = Show(sys.argv[1]) # first argument is j-archive link to show
 
     data = show.get_data()
 
     with open('show_data.json', 'w+') as f:
         json.dump(data, f)
+        print "Finished successfully"

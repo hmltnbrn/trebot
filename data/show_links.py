@@ -29,6 +29,8 @@ def get(first_season):
     return all_links
 
 if __name__ == "__main__":
+    print "Generating show links..."
+
     first_season = int(sys.argv[1]) # first argument is season to start on
 
     last_season = get_last_season()
@@ -41,3 +43,4 @@ if __name__ == "__main__":
 
     with open('show_links.json', 'w+') as f:
         json.dump(all_links, f)
+        print "Finished successfully"
