@@ -5,14 +5,14 @@ import re
 import datetime
 from bs4 import BeautifulSoup
 
-# {"category":"3-LETTER WORDS",
-# "air_date":"2004-12-31",
-# "question":"'In the title of an Aesop fable, this insect shared billing with a grasshopper'",
-# "value":"$200",
-# "answer":"the ant",
-# "round":"Jeopardy!",
-# "show_number":"4680",
-# "link": "http://www.j-archive.com/showgame.php?game_id=173"}
+# "category": "POLITICS",
+# "link": "http://www.j-archive.com/showgame.php?game_id=368",
+# "value": "$100",
+# "air_date": "1985-02-08T00:00:00",
+# "answer": "Election Day",
+# "question": "1st Tuesday after the 1st Monday in November",
+# "round": "Jeopardy!",
+# "show_number": "110"
 
 class Show(object):
 
