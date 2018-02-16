@@ -53,7 +53,7 @@ class Show(object):
                     })
         return data
 
-class Round(Show):
+class Round(object):
 
     def __init__(self, name, html):
         self.name = name
@@ -70,7 +70,7 @@ class Round(Show):
                 categories.append(Category(cat_name.find(text=True), clues[i:len(clues):6], self.html if self.name == 'Final Jeopardy!' else None))
         return categories
 
-class Category(Round):
+class Category(object):
 
     def __init__(self, name, html, answer_div = None):
         self.name = name
@@ -90,7 +90,7 @@ class Category(Round):
                 clues.append(Clue("", question.encode_contents(), re.search(r'<em class=\\"correct_response\\">(.*)</em>', answer["onmouseover"]).group(1)))
         return clues
 
-class Clue(Category):
+class Clue(object):
 
     def __init__(self, value, question, answer):
         self.value = value
