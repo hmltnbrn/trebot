@@ -17,10 +17,7 @@ def get_last_season():
     seasons = html.find(id="content").find('table').findAll('a')
     return int(seasons[0].find(text=True).split(" ")[1])
 
-def get(in_first_season, in_last_season):
-    first_season = in_first_season if in_first_season is not None else 1
-    last_season = in_last_season if in_last_season is not None else get_last_season()
-
+def get(first_season = 1, last_season = get_last_season()):
     print "Starting with season " + str(first_season) + " and ending with season " + str(last_season)
 
     all_links = []
