@@ -8,7 +8,7 @@ base_url = "http://j-archive.com/showseason.php?season="
 def get_show_links(link):
     html = BeautifulSoup(urllib2.urlopen(link), "html.parser")
     links = html.find(id="content").find('table').findAll('td', {'align': 'left'})
-    return [i.find('a')['href'] for i in links]
+    return [i.find('a')['href'] for i in links][::-1]
 
 def get_last_season():
     print "Finding last season..."
@@ -20,11 +20,11 @@ def get_last_season():
 def get(first_season = 1, last_season = get_last_season()):
     print "Starting with season " + str(first_season) + " and ending with season " + str(last_season)
 
-    all_links = []
+    all_links = {}
 
     for season in xrange(first_season, last_season + 1):
-        print "Finding shows from season " + str(season)
-        all_links += get_show_links(base_url + str(season))
+        sys.stdout.write("\rFinding shows from season " + str(season) + "...")
+        all_links[season] = get_show_links(base_url + str(season))
 
     return all_links
 
@@ -43,11 +43,11 @@ if __name__ == "__main__":
 
     print "Starting with season " + str(first_season) + " and ending with season " + str(last_season)
 
-    all_links = []
+    all_links = {}
 
     for season in xrange(first_season, last_season + 1):
-        print "Finding shows from season " + str(season)
-        all_links += get_show_links(base_url + str(season))
+        sys.stdout.write("\rFinding shows from season " + str(season) + "...")
+        all_links[season] = get_show_links(base_url + str(season))
 
     with open('show_links.json', 'w+') as f:
         json.dump(all_links, f)

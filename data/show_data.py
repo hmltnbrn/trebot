@@ -23,7 +23,6 @@ class Show(object):
         self.rounds = self.set_rounds()
 
     def set_rounds(self):
-        print self.show_number
         rounds = []
         first_round = self.html.find(id='jeopardy_round')
         second_round = self.html.find(id='double_jeopardy_round')
