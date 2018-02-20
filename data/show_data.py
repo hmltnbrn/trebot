@@ -10,15 +10,17 @@ from bs4 import BeautifulSoup
 # "value": "$100",
 # "air_date": "1985-02-08T00:00:00",
 # "answer": "Election Day",
+# "season": "1",
 # "question": "1st Tuesday after the 1st Monday in November",
 # "round": "Jeopardy!",
 # "show_number": "110"
 
 class Show(object):
 
-    def __init__(self, link):
+    def __init__(self, link, season):
         self.link = link
         self.html = BeautifulSoup(urllib2.urlopen(link), "html.parser")
+        self.season = str(season)
         self.show_number, self.air_date = self.html.find(id='game_title').find('h1').find(text=True).split(' - ')
         self.rounds = self.set_rounds()
 
@@ -42,6 +44,7 @@ class Show(object):
                 for clue in category.clues:
                     data.append({
                         "link": self.link,
+                        "season": self.season,
                         "air_date": datetime.datetime.strptime(self.air_date, '%A, %B %d, %Y').isoformat(),
                         "show_number": self.show_number.split(" #")[1],
                         "round": round.name,
@@ -96,15 +99,15 @@ class Clue(object):
         self.question = question
         self.answer = answer
 
-def get(link):
-    show = Show(link)
+def get(link, season):
+    show = Show(link, season)
 
     return show.get_data()
 
 if __name__ == "__main__":
     print "Generating show data..."
 
-    show = Show(sys.argv[1]) # first argument is j-archive link to show
+    show = Show(sys.argv[1], sys.argv[2]) # first argument -- j-archive link | second -- season
 
     data = show.get_data()
 
