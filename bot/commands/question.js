@@ -22,7 +22,7 @@ module.exports = function(channel, args, cb) {
             value: markdown
           }],
           footer: {
-            text: `${moment(data.air_date).format("MMMM Do, YYYY")} (Episode #${data.show_number})`
+            text: `${moment(data.air_date).format("MMMM Do, YYYY")} (Season ${data.season} -- Episode #${data.show_number})`
           }
         }});
       }

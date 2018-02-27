@@ -24,7 +24,7 @@ He helps you play Jeopardy on Discord.
     mongoimport --jsonArray --host <HOSTNAME> --ssl --username <USERNAME> --password <PASSWORD> --authenticationDatabase admin --db jeopardy --collection public --type json --file <FILENAME>.json
     ```
 
-7. Copy the contents of .env.example and create a new .env file with the contents pasted inside. Put the appropriate values in their spots.
+7. Copy the contents of .env.example and create a new .env file with the contents pasted inside. Put the appropriate values in their spots. The URI should be provided by MongoDB Atlas or whatever database you are using.
 
 8. Type and run the command below to run the server.
 
@@ -33,6 +33,32 @@ He helps you play Jeopardy on Discord.
     ```
 
 9. Check Discord. Your bot should now be running.
+
+## J-Archive HTML Scraping
+
+1. Install [Python 2.7](https://www.python.org/downloads/) and the [PyMongo](https://api.mongodb.com/python/current/) and [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/) packages.
+
+2. Navigate into the /db directory.
+
+    ```
+    cd db
+    ```
+
+3. Set up a **credentials.json** file in this directory with a URI field. It uses the same URI as that of the .env file from above.
+
+    ```json
+    {
+      "uri": <URI HERE>
+    }
+    ```
+
+4. To scrape the entire archive of the site, run the following command. This will create a collection in your database with all questions leading up to the most recent episode.
+
+    ```
+    python scrape_archive.py
+    ```
+
+5. Update your .env file with the correct MONGO_DATABASE and MONGO_COLLECTION.
 
 ## Discord Usage
 
