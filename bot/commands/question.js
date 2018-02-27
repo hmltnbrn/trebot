@@ -23,7 +23,8 @@ module.exports = function(channel, args, cb) {
           }],
           footer: {
             text: `${moment(data.air_date).format("MMMM Do, YYYY")} (Season ${data.season} -- Episode #${data.show_number})`
-          }
+          },
+          url: data.link
         }});
       }
     });

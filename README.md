@@ -38,10 +38,10 @@ He helps you play Jeopardy on Discord.
 
 1. Install [Python 2.7](https://www.python.org/downloads/) and the [PyMongo](https://api.mongodb.com/python/current/) and [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/) packages.
 
-2. Navigate into the /db directory.
+2. Navigate into the /data directory.
 
     ```
-    cd db
+    cd data
     ```
 
 3. Set up a **credentials.json** file in this directory with a URI field. It uses the same URI as that of the .env file from above.
@@ -52,7 +52,7 @@ He helps you play Jeopardy on Discord.
     }
     ```
 
-4. To scrape the entire archive of the site, run the following command. This will create a collection in your database with all questions leading up to the most recent episode.
+4. To scrape the entire archive of the site, run the following command. This will create a collection in your database with all questions leading up to the most recent episode. It will take some time.
 
     ```
     python scrape_archive.py

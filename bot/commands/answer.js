@@ -1,6 +1,20 @@
+const upndown = require('upndown');
+
 module.exports = function(channel, answer, cb) {
   if(answer) {
-    channel.send(answer);
+    let und = new upndown();
+    und.convert(answer, function(err, markdown) {
+      if(err) { console.err(err); }
+      else {
+        channel.send({embed: {
+          color: 58,
+          fields: [{
+            name: "Answer:",
+            value: markdown
+          }]
+        }});
+      }
+    });
     return cb("Responding with answer");
   }
   else {
