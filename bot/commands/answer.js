@@ -6,13 +6,7 @@ module.exports = function(channel, answer, cb) {
     und.convert(answer, function(err, markdown) {
       if(err) { console.err(err); }
       else {
-        channel.send({embed: {
-          color: 58,
-          fields: [{
-            name: "Answer:",
-            value: markdown
-          }]
-        }});
+        channel.send(markdown);
       }
     });
     return cb("Responding with answer");
