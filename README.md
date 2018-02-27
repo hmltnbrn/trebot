@@ -48,7 +48,7 @@ He helps you play Jeopardy on Discord.
 
     ```json
     {
-      "uri": <URI HERE>
+      "uri": "<URI HERE>"
     }
     ```
 
@@ -77,3 +77,5 @@ Commands can be either uppercase or lowercase.
     !trebot answer
     !trebot a
     ```
+
+3. **!trebot** can also be shortened to **!tre** or **!t**.
