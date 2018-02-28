@@ -44,8 +44,9 @@ Thumbs.db
 # Local environment variables
 .env
 
-# JSON data
+# Data files
 /data/*.json
+/data/*.csv
 
 # Compiled Python
 *.pyc
