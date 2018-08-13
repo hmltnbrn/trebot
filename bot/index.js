@@ -17,7 +17,7 @@ client.on('ready', () => {
   logger.info(client.user.username + ' - (' + client.user.id + ')');
 });
 
-let randomAnswer = "";
+let randomAnswer = {};
 
 client.on('message', msg => {
 
@@ -29,14 +29,14 @@ client.on('message', msg => {
 
       if(args[1].toLowerCase() === 'question' || args[1].toLowerCase() === 'q') {
         commands.question(msg.channel, args, (answer, log) => {
-          randomAnswer = answer;
+          randomAnswer[msg.channel.id] = answer;
           logger.info(log);
         });
       }
 
       else if (args[1].toLowerCase() === 'answer' || args[1].toLowerCase() === 'a') {
-        commands.answer(msg.channel, randomAnswer, (log) => {
-          randomAnswer = "";
+        commands.answer(msg.channel, randomAnswer[msg.channel.id], (log) => {
+          randomAnswer[msg.channel.id] = "";
           logger.info(log);
         });
       }
