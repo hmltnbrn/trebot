@@ -1,6 +1,6 @@
 const upndown = require('upndown');
 
-module.exports = function(channel, answer, cb) {
+module.exports = async (channel, answer) => {
   if(answer) {
     let und = new upndown();
     und.convert(answer, function(err, markdown) {
@@ -9,10 +9,10 @@ module.exports = function(channel, answer, cb) {
         channel.send(markdown);
       }
     });
-    return cb("Responding with answer");
+    return Promise.resolve("Responding with answer");
   }
   else {
     channel.send("You need a question first, honey.");
-    return cb("No saved question");
+    return Promise.resolve("No saved question");
   }
 }
