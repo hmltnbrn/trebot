@@ -14,57 +14,63 @@ const client = new Discord.Client();
 client.on('ready', () => {
   logger.info('Connected');
   logger.info('Logged in as: ');
-  logger.info(client.user.username + ' - (' + client.user.id + ')');
+  logger.info(`${client.user.username} - (${client.user.id})`);
 });
 
-let randomAnswer = {};
+const prefix = process.env.BOT_PREFIX || "!"; // Use env var for prefix or default to exclamation
 
-client.on('message', msg => {
+let randomAnswer = {}; // Random answer object (can hold answers for multiple servers)
 
-  if(msg.author.id !== process.env.BOT_ID && msg.content[0] === "!") {
+client.on('message', async msg => {
 
-    var args = msg.content.split(" "); // split arguments into array
+  if(msg.author.bot) return; // Don't allow bot to respond to itself or other bots
 
-    if((args[0].toLowerCase() === "!trebot" || args[0].toLowerCase() === "!tre" || args[0].toLowerCase() === "!t") && args[1]) {
+  if(msg.content.indexOf(prefix) !== 0) return; // Check for message prefix that initiates bot
 
-      if(args[1].toLowerCase() === 'question' || args[1].toLowerCase() === 'q') {
-        commands.question(msg.channel, args, (answer, log) => {
-          randomAnswer[msg.channel.id] = answer;
-          logger.info(log);
-        });
-      }
+  // Parses message for command and arguments
+  const args = msg.content.slice(prefix.length).trim().split(/ +/g).map(arg => arg.toLowerCase());
+  const command = args.shift().toLowerCase();
 
-      else if (args[1].toLowerCase() === 'answer' || args[1].toLowerCase() === 'a') {
-        commands.answer(msg.channel, randomAnswer[msg.channel.id], (log) => {
-          randomAnswer[msg.channel.id] = "";
-          logger.info(log);
-        });
-      }
+  if(command !== 'trebot' && command !== 'tre' && command !== 't') return;
 
-      else if (args[1].toLowerCase() === 'help') {
-        commands.help(msg.channel, (log) => {
-          logger.info(log);
-        });
-      }
-
-      else if (["lonely", "!lonely"].indexOf(args[1].toLowerCase()) >= 0) {
-        msg.channel.send("Shut up and play, honey.");
-        logger.info("Lonely command");
-      }
-
-      else {
-        msg.channel.send("Not a command, honey.");
-        logger.info("Failed command");
-      }
-
+  // Ask a question
+  if(args[0] === 'question' || args[0] === 'q') {
+    try {
+      var {answer, log} = await commands.question(msg.channel, args);
+      randomAnswer[msg.channel.id] = answer;
+    } catch (e) {
+      var log = e;
     }
-
-    else if(args[0].toLowerCase() === "!johnny" && args[1]) {
-      msg.channel.send("You must be thinking of the old guy. Try !trebot instead, honey.");
-      logger.info("Old command");
-    }
-
+    logger.info(log);
   }
+
+  // Get an answer
+  else if (args[0] === 'answer' || args[0] === 'a') {
+    try {
+      var log = await commands.answer(msg.channel, randomAnswer[msg.channel.id]);
+      randomAnswer[msg.channel.id] = "";
+    } catch (e) {
+      var log = e;
+    }
+    logger.info(log);
+  }
+
+  // Ask for help
+  else if (args[0] === 'help') {
+    try {
+      var log = await commands.help(msg.channel);
+    } catch (e) {
+      var log = e;
+    }
+    logger.info(log);
+  }
+
+  // Not a command
+  else {
+    msg.channel.send("Not a command, honey.");
+    logger.info("Failed command");
+  }
+
 });
 
 client.login(process.env.BOT_TOKEN);
