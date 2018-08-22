@@ -5,13 +5,15 @@ const db = require('../../db');
 
 module.exports = async (channel, args) => {
   try {
-    var data = await db.getRandomQuestion();
+    var data = await db.getRandomQuestion(); // Get random question from Mongo database
   } catch (e) {
     return Promise.reject(e);
   }
   let und = new upndown();
-  und.convert(data.question, function(err, markdown) {
-    if(err) { console.err(err); }
+  und.convert(data.question, function(err, markdown) { // Convert HTML to markdown
+    if(err) {
+      return Promise.reject(err);
+    }
     else {
       channel.send({embed: {
         color: 58,
@@ -28,11 +30,13 @@ module.exports = async (channel, args) => {
       }});
     }
   });
-  if(args[2] === '20' || args[2] === '30') {
-    setTimeout(() => {
-      channel.send(data.answer);
-      return Promise.resolve({answer: data.answer, log: "Responding with question and answer"});
-    }, parseInt(args[2])*1000);
+  if(args[1] === '20' || args[1] === '30') { // Check for answer timer
+    return await new Promise(resolve => {
+      setTimeout(() => {
+        channel.send(data.answer);
+        return resolve({answer: "", log: "Responding with question and answer"})
+      }, parseInt(args[1])*1000);
+    });
   }
   else {
     return Promise.resolve({answer: data.answer, log: "Responding with question"});

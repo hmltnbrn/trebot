@@ -3,8 +3,10 @@ const upndown = require('upndown');
 module.exports = async (channel, answer) => {
   if(answer) {
     let und = new upndown();
-    und.convert(answer, function(err, markdown) {
-      if(err) { console.err(err); }
+    und.convert(answer, function(err, markdown) { // Convert HTML to markdown
+      if(err) {
+        return Promise.reject(err);
+      }
       else {
         channel.send(markdown);
       }
