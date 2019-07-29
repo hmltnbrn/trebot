@@ -1,6 +1,6 @@
-let question = require('./question');
-let answer = require('./answer');
-let help = require('./help');
+const question = require('./question');
+const answer = require('./answer');
+const help = require('./help');
 
 module.exports = {
   question,

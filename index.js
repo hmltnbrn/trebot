@@ -12,10 +12,11 @@ require('dotenv-safe').load({
   allowEmptyValues: true
 });
 
-var bot = require('./bot');
+require('./bot');
 
 app.listen(port);
 
+//Handle Main Page
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname + '/www/index.html'));
 });

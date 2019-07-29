@@ -1,6 +1,6 @@
 # Trebot
 
-He helps you play Jeopardy on Discord.
+He helps you play Jeopardy on Discord. Over 350,000 trivia questions available.
 
 ## Installation
 
@@ -52,7 +52,7 @@ He helps you play Jeopardy on Discord.
     }
     ```
 
-4. To scrape the entire archive of the site, run the following command. This will create a collection in your database with all questions leading up to the most recent episode. It will take some time.
+4. To scrape the entire archive of the site, run the following command. This will create a collection in your database with all questions leading up to the most recent episode. It will take some time (between one and two hours).
 
     ```
     python scrape_archive.py

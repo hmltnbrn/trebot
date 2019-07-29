@@ -34,11 +34,11 @@ module.exports = async (channel, args) => {
     return await new Promise(resolve => {
       setTimeout(() => {
         channel.send(data.answer);
-        return resolve({answer: "", log: "Responding with question and answer"})
+        return resolve({ answer: "", log: "Responding with question and answer" })
       }, parseInt(args[1])*1000);
     });
   }
   else {
-    return Promise.resolve({answer: data.answer, log: "Responding with question"});
+    return Promise.resolve({ answer: data.answer, log: "Responding with question" });
   }
 }
