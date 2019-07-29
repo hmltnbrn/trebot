@@ -8,7 +8,7 @@ module.exports = async (channel, answer, username, contestantAnswer) => {
     var markdown = turndownService.turndown(answer); // Convert HTML to markdown
     if(contestantAnswer) {
       var similarity = stringSimilarity.compareTwoStrings(removeMd(markdown).toLowerCase(), contestantAnswer);
-      if(similarity >= 0.8) { // Check for an 80% similarity rating between the contestant's answer and the actual answer
+      if(similarity >= 0.6) { // Check for an 60% similarity rating between the contestant's answer and the actual answer
         channel.send(`${username} is correct! The answer is ${markdown}`);
         return Promise.resolve({ log: "Responding with answer", reset: true });
       }
