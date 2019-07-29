@@ -30,15 +30,21 @@ client.on('message', asyncWrap(async msg => {
 
   // Ask a question
   if(args[0] === 'question' || args[0] === 'q') {
-    var { answer, log} = await commands.question(msg.channel, args);
+    var { answer, log } = await commands.question(msg.channel, args);
     randomAnswer[msg.channel.id] = answer;
     console.log(log);
   }
 
   // Get an answer
   else if (args[0] === 'answer' || args[0] === 'a') {
-    var log = await commands.answer(msg.channel, randomAnswer[msg.channel.id]);
-    randomAnswer[msg.channel.id] = "";
+    if(args[1]) { // If a user supplied an answer
+      var { log, reset } = await commands.contestantAnswer(msg.channel, randomAnswer[msg.channel.id], msg.author.username, args.slice(1).join(' '));
+      if(reset) randomAnswer[msg.channel.id] = "";
+    }
+    else {
+      var log = await commands.answer(msg.channel, randomAnswer[msg.channel.id]);
+      randomAnswer[msg.channel.id] = "";
+    }
     console.log(log);
   }
 

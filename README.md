@@ -71,11 +71,18 @@ Commands can be either uppercase or lowercase.
     !trebot q [20|30]
     ```
 
-2. Reveal answer of previously generated question:
+2. Guess the answer of a previously generated question. Once the answer is correctly guessed, it will be automatically revealed. Will not work with timed questions. (**BETA** -- will have false negatives/positives):
+
+    ```
+    !trebot answer <answer text>
+    !trebot a <answer text>
+    ```
+
+3. Reveal answer of previously generated question:
 
     ```
     !trebot answer
     !trebot a
     ```
 
-3. **!trebot** can also be shortened to **!tre** or **!t**.
+4. **!trebot** can also be shortened to **!tre** or **!t**.

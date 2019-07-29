@@ -1,16 +1,10 @@
-const upndown = require('upndown');
+const TurndownService = require('turndown')
 
 module.exports = async (channel, answer) => {
   if(answer) {
-    let und = new upndown();
-    und.convert(answer, function(err, markdown) { // Convert HTML to markdown
-      if(err) {
-        return Promise.reject(err);
-      }
-      else {
-        channel.send(markdown);
-      }
-    });
+    var turndownService = new TurndownService()
+    var markdown = turndownService.turndown(answer); // Convert HTML to markdown
+    channel.send(markdown);
     return Promise.resolve("Responding with answer");
   }
   else {
