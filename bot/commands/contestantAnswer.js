@@ -7,8 +7,9 @@ module.exports = async (channel, answer, username, contestantAnswer) => {
     var turndownService = new TurndownService()
     var markdown = turndownService.turndown(answer); // Convert HTML to markdown
     if(contestantAnswer) {
-      var similarity = stringSimilarity.compareTwoStrings(removeMd(markdown).toLowerCase(), contestantAnswer);
-      if(similarity >= 0.6) { // Check for an 60% similarity rating between the contestant's answer and the actual answer
+      var stringAnswer = removeMd(markdown).toLowerCase();
+      var similarity = stringSimilarity.compareTwoStrings(stringAnswer, contestantAnswer);
+      if(similarity >= 0.6 || checkPartial(stringAnswer.split(' '), contestantAnswer.split(' '))) { // Check for a 60% similarity rating between the contestant's answer and the actual answer OR some words being present
         channel.send(`${username} is correct! The answer is ${markdown}`);
         return Promise.resolve({ log: "Responding with answer", reset: true });
       }
@@ -25,3 +26,16 @@ module.exports = async (channel, answer, username, contestantAnswer) => {
     return Promise.resolve({ log: "No saved question", reset: false });
   }
 }
+
+const checkPartial = (answerArr, contestantAnswerArr) => {
+  var correctNum = 0;
+  for(var i = 0; i < answerArr.length; i++) {
+    for(var j = 0; j < contestantAnswerArr.length; j++) {
+      if(answerArr[i] === contestantAnswerArr[j]) {
+        correctNum++;
+      }
+    }
+  }
+  if(correctNum === contestantAnswerArr.length) return true;
+  else return false;
+};
