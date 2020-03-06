@@ -10,7 +10,7 @@ client.on('ready', () => {
   console.log(`${client.user.username} - (${client.user.id})`);
 });
 
-const prefix = process.env.BOT_PREFIX || "!"; // Use env var for prefix or default to exclamation
+const prefix = process.env.BOT_PREFIX || "."; // Use env var for prefix or default to exclamation
 
 let randomAnswer = {}; // Random answer object (can hold answers for multiple servers)
 

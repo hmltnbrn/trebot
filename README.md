@@ -67,22 +67,22 @@ Commands can be either uppercase or lowercase.
 1. Generate random question with optional 20 or 30 second timer:
 
     ```
-    !trebot question [20|30]
-    !trebot q [20|30]
+    .trebot question [20|30]
+    .trebot q [20|30]
     ```
 
 2. Guess the answer of a previously generated question. Once the answer is correctly guessed, it will be automatically revealed. Will not work with timed questions. (**BETA** -- will have false negatives/positives):
 
     ```
-    !trebot answer <answer text>
-    !trebot a <answer text>
+    .trebot answer <answer text>
+    .trebot a <answer text>
     ```
 
 3. Reveal answer of previously generated question:
 
     ```
-    !trebot answer
-    !trebot a
+    .trebot answer
+    .trebot a
     ```
 
-4. **!trebot** can also be shortened to **!tre** or **!t**.
+4. **.trebot** can also be shortened to **.tre** or **.t**.

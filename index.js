@@ -8,7 +8,7 @@ app.use(compression());
 
 app.use(express.static(__dirname + '/www/'));
 
-require('dotenv-safe').load({
+require('dotenv-safe').config({
   allowEmptyValues: true
 });
 
