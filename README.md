@@ -15,7 +15,7 @@ He helps you play Jeopardy on Discord. Over 350,000 trivia questions available.
 5. Use terminal/cmd/powershell/something similar to navigate to the directory with the files and type the command below. This will automatically install all dependencies listed in the **package.json** file.
 
     ```
-    npm install
+    yarn install
     ```
 
 6. Download the JSON file with the Jeopardy data by searching for it yourself. It's not hard to find. Insert the JSON file into your database by using the terminal and entering the command below. Replace the values between '<>' with your own.
@@ -29,7 +29,7 @@ He helps you play Jeopardy on Discord. Over 350,000 trivia questions available.
 8. Type and run the command below to run the server.
 
     ```
-    npm start
+    yarn start
     ```
 
 9. Check Discord. Your bot should now be running.
