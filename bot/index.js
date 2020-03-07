@@ -49,7 +49,7 @@ client.on('message', asyncWrap(async msg => {
   }
 
   // Ask for help
-  else if (args[0] === 'help') {
+  else if (args[0] === 'help' || args[0] === 'h') {
     var log = await commands.help(msg.channel);
     console.log(log);
   }
