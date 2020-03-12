@@ -18,11 +18,7 @@ He helps you play Jeopardy on Discord. Over 350,000 trivia questions available.
     yarn install
     ```
 
-6. Download the JSON file with the Jeopardy data by searching for it yourself. It's not hard to find. Insert the JSON file into your database by using the terminal and entering the command below. Replace the values between '<>' with your own.
-
-    ```
-    mongoimport --jsonArray --host <HOSTNAME> --ssl --username <USERNAME> --password <PASSWORD> --authenticationDatabase admin --db jeopardy --collection public --type json --file <FILENAME>.json
-    ```
+6. Follow the instructions below for scraping J-Archive and creating your database.
 
 7. Copy the contents of .env.example and create a new .env file with the contents pasted inside. Put the appropriate values in their spots. The URI should be provided by MongoDB Atlas or whatever database you are using.
 
@@ -36,7 +32,7 @@ He helps you play Jeopardy on Discord. Over 350,000 trivia questions available.
 
 ## J-Archive HTML Scraping
 
-1. Install [Python 2.7](https://www.python.org/downloads/) and the [PyMongo](https://api.mongodb.com/python/current/) and [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/) packages.
+1. Install [Python 3.7](https://www.python.org/downloads/) and the [PyMongo](https://api.mongodb.com/python/current/) and [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/) packages.
 
 2. Navigate into the /data directory.
 

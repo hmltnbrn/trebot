@@ -41,7 +41,7 @@ module.exports = async (channel, args) => {
     return await new Promise(resolve => {
       setTimeout(() => {
         channel.send(data.answer);
-        return resolve({ answer: "", log: "Responding with question and answer" })
+        return resolve({ answer: "", value: 0, log: "Responding with question and answer" })
       }, parseInt(args[1])*1000);
     });
   }
