@@ -11,10 +11,10 @@ module.exports = async (channel, args) => {
   }
   let valueNumber = 0;
   if(data.value && data.value[0] === 'D') {
-    valueNumber = parseInt(data.value.replace('DD: $', ''));
+    valueNumber = parseInt(data.value.replace('DD: $', '').replace(',', ''));
   }
   else {
-    valueNumber = data.value ? parseInt(data.value.replace('$', '')) : 1000;
+    valueNumber = data.value ? parseInt(data.value.replace('$', '').replace(',', '')) : 1000;
   }
   let und = new upndown();
   und.convert(data.question, function(err, markdown) { // Convert HTML to markdown
