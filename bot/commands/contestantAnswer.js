@@ -49,7 +49,7 @@ const checkPartial = (answerArr, contestantAnswerArr) => {
   var correctNum = 0;
   for(var i = 0; i < answerArr.length; i++) {
     for(var j = 0; j < contestantAnswerArr.length; j++) {
-      if(answerArr[i] === contestantAnswerArr[j]) {
+      if(stringSimilarity.compareTwoStrings(answerArr[i], contestantAnswerArr[j]) >= 0.8) {
         correctNum++;
       }
     }
