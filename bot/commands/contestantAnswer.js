@@ -1,8 +1,10 @@
-const TurndownService = require('turndown')
+const TurndownService = require('turndown');
 const removeMd = require('remove-markdown');
 const stringSimilarity = require('string-similarity');
 
-module.exports = async (channel, answer, username, contestantAnswer) => {
+const db = require('../../db');
+
+module.exports = async (channel, guild, answer, value, member, contestantAnswer) => {
   if(answer) {
     var turndownService = new TurndownService()
     var markdown = turndownService.turndown(answer); // Convert HTML to markdown
@@ -10,10 +12,26 @@ module.exports = async (channel, answer, username, contestantAnswer) => {
       var stringAnswer = removeMd(markdown).toLowerCase();
       var similarity = stringSimilarity.compareTwoStrings(stringAnswer, contestantAnswer);
       if(similarity >= 0.6 || checkPartial(stringAnswer.split(' '), contestantAnswer.split(' '))) { // Check for a 60% similarity rating between the contestant's answer and the actual answer OR some words being present
-        channel.send(`${username} is correct! The answer is ${markdown}`);
+        try {
+          var contestant = await db.setContestantScore(guild.id, member, value);
+        } catch (e) {
+          return Promise.reject(e);
+        }
+        channel.send({embed: {
+          color: 58,
+          title: `${member.displayName} is correct!`,
+          description: `The answer is ${markdown}`,
+          fields: [{
+            name: "-----------",
+            value: `${member.displayName}'s cash winnings are now $${contestant.score}`
+          }],
+          footer: {
+            text: `Awarded $${value} for the correct answer`
+          },
+        }});
         return Promise.resolve({ log: "Responding with answer", reset: true });
       }
-      channel.send(`Sorry, ${username}, that's incorrect.`);
+      channel.send(`Sorry, ${member.displayName}, that's incorrect.`);
     }
     else {
       channel.send("The is a mistake, honey.");

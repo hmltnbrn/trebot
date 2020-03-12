@@ -9,6 +9,13 @@ module.exports = async (channel, args) => {
   } catch (e) {
     return Promise.reject(e);
   }
+  let valueNumber = 0;
+  if(data.value && data.value[0] === 'D') {
+    valueNumber = parseInt(data.value.replace('DD: $', ''));
+  }
+  else {
+    valueNumber = data.value ? parseInt(data.value.replace('$', '')) : 1000;
+  }
   let und = new upndown();
   und.convert(data.question, function(err, markdown) { // Convert HTML to markdown
     if(err) {
@@ -39,6 +46,6 @@ module.exports = async (channel, args) => {
     });
   }
   else {
-    return Promise.resolve({ answer: data.answer, log: "Responding with question" });
+    return Promise.resolve({ answer: data.answer, value: isNaN(valueNumber) ? 0 : valueNumber, log: "Responding with question" });
   }
 }

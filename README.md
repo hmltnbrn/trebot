@@ -58,7 +58,7 @@ He helps you play Jeopardy on Discord. Over 350,000 trivia questions available.
     python scrape_archive.py
     ```
 
-5. Update your .env file with the correct MONGO_DATABASE and MONGO_COLLECTION.
+5. Update your .env file with the correct values for each variable.
 
 ## Discord Usage
 
@@ -71,7 +71,7 @@ Commands can be either uppercase or lowercase.
     .trebot q [20|30]
     ```
 
-2. Guess the answer of a previously generated question. Once the answer is correctly guessed, it will be automatically revealed. Will not work with timed questions. (**BETA** -- will have false negatives/positives):
+2. Guess the answer of a previously generated question. Once the answer is correctly guessed, it will be automatically revealed and the score for the winning contestant will be increased. Will not work with timed questions. (**BETA** -- will have false negatives/positives):
 
     ```
     .trebot answer <answer text>
@@ -85,4 +85,11 @@ Commands can be either uppercase or lowercase.
     .trebot a
     ```
 
-4. **.trebot** can also be shortened to **.tre** or **.t**.
+4. Reveal score for each contestant in the server:
+
+    ```
+    .trebot score
+    .trebot s
+    ```
+
+5. **.trebot** can also be shortened to **.tre** or **.t**.

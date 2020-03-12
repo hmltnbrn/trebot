@@ -8,8 +8,8 @@ import show_data
 def add_to_database(client, collection_name, data, season):
     db = client['jeopardy']
     collection = db[collection_name]
-    result = collection.insert_many(data)
-    print "Inserted season " + str(season) + " data"
+    collection.insert_many(data)
+    print("Inserted season " + str(season) + " data")
 
 if __name__ == "__main__":
     with open('credentials.json') as cred_file:
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     for season in links:
         jeopardy_data = []
         length = len(links[season])
-        for i in xrange(length):
+        for i in range(length):
             jeopardy_data += show_data.get(links[season][i], season)
             amtDone = float(i+1)/float(length)
             if(len(jeopardy_data) > 0):
@@ -42,4 +42,4 @@ if __name__ == "__main__":
         sys.stdout.write("\n")
         add_to_database(client, collection_name, jeopardy_data, season)
 
-    print "Data successfully uploaded"
+    print("Data successfully uploaded")

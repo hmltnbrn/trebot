@@ -1,5 +1,5 @@
 import sys
-import urllib2
+from urllib.request import urlopen
 import json
 import re
 import datetime
@@ -19,10 +19,14 @@ class Show(object):
 
     def __init__(self, link, season):
         self.link = link
-        self.html = BeautifulSoup(urllib2.urlopen(link), "html.parser")
+        self.html = self.get_html()
         self.season = str(season)
         self.show_number, self.air_date = self.html.find(id='game_title').find('h1').find(text=True).split(' - ')
         self.rounds = self.set_rounds()
+
+    def get_html(self):
+        html = urlopen(self.link).read().decode('utf-8')
+        return BeautifulSoup(html, 'lxml') # requires the lxml Python module to be installed
 
     def set_rounds(self):
         rounds = []
@@ -66,7 +70,7 @@ class Round(object):
         categories = []
         cats = self.html.findAll(class_='category')
         clues = self.html.findAll(class_='clue')
-        for i in xrange(len(cats)):
+        for i in range(len(cats)):
             cat_name = cats[i].find(class_='category_name')
             if cat_name:
                 categories.append(Category(cat_name.find(text=True), clues[i:len(clues):6], self.html if self.name == 'Final Jeopardy!' else None))
@@ -82,14 +86,14 @@ class Category(object):
 
     def set_clues(self):
         clues = []
-        for i in xrange(len(self.html)):
+        for i in range(len(self.html)):
             value = self.html[i].find(class_="clue_value") if self.html[i].find(class_="clue_value_daily_double") is None else self.html[i].find(class_="clue_value_daily_double")
             question = self.html[i].find(class_="clue_text")
             answer = self.answer_div.find("div") if self.answer_div is not None else self.html[i].find("div")
             if(value and question and answer):
-                clues.append(Clue(value.find(text=True), question.encode_contents(), re.search('<em class="correct_response">(.*)</em>', answer["onmouseover"]).group(1)))
+                clues.append(Clue(value.find(text=True), question.decode_contents(), re.search('<em class="correct_response">(.*)</em>', answer["onmouseover"]).group(1)))
             elif(question and answer):
-                clues.append(Clue("", question.encode_contents(), re.search(r'<em class=\\"correct_response\\">(.*)</em>', answer["onmouseover"]).group(1)))
+                clues.append(Clue("", question.decode_contents(), re.search(r'<em class=\\"correct_response\\">(.*)</em>', answer["onmouseover"]).group(1)))
         return clues
 
 class Clue(object):
@@ -105,7 +109,7 @@ def get(link, season):
     return show.get_data()
 
 if __name__ == "__main__":
-    print "Generating show data..."
+    print("Generating show data...")
 
     show = Show(sys.argv[1], sys.argv[2]) # first argument -- j-archive link | second -- season
 
@@ -113,4 +117,4 @@ if __name__ == "__main__":
 
     with open('show_data.json', 'w+') as f:
         json.dump(data, f)
-        print "Finished successfully"
+        print("Finished successfully")

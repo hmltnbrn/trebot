@@ -30,22 +30,26 @@ client.on('message', asyncWrap(async msg => {
 
   // Ask a question
   if(args[0] === 'question' || args[0] === 'q') {
-    var { answer, log } = await commands.question(msg.channel, args);
-    randomAnswer[msg.channel.id] = answer;
+    var { answer, value, log } = await commands.question(msg.channel, args);
+    randomAnswer[msg.channel.id] = { answer, value };
     console.log(log);
   }
 
   // Get an answer
   else if (args[0] === 'answer' || args[0] === 'a') {
     if(args[1]) { // If a user supplied an answer
-      var { log, reset } = await commands.contestantAnswer(msg.channel, randomAnswer[msg.channel.id], msg.member.displayName, args.slice(1).join(' '));
+      var { log, reset } = await commands.contestantAnswer(msg.channel, msg.guild, randomAnswer[msg.channel.id].answer, randomAnswer[msg.channel.id].value, msg.member, args.slice(1).join(' '));
       if(reset) randomAnswer[msg.channel.id] = "";
     }
     else {
-      var log = await commands.answer(msg.channel, randomAnswer[msg.channel.id]);
+      var log = await commands.answer(msg.channel, randomAnswer[msg.channel.id].answer);
       randomAnswer[msg.channel.id] = "";
     }
     console.log(log);
+  }
+
+  else if(args[0] === 'score' || args[0] === 's') {
+    var log = await commands.score(msg.channel, msg.guild);
   }
 
   // Ask for help
