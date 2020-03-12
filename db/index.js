@@ -36,7 +36,7 @@ exports.getContestants = async (guildId) => {
     const collection = client.db(process.env.MONGO_DATABASE).collection(process.env.MONGO_CONTESTANT_COLLECTION); // Find database and collection
     var contestants = await collection.find(
       { server_id: guildId }
-    ).toArray(); // Find all contestants for a specific server
+    ).sort({ score: -1 }).toArray(); // Find all contestants for a specific server
   } catch (e) {
     return Promise.reject(e);
   }
