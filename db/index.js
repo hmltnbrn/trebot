@@ -14,7 +14,7 @@ exports.getRandomQuestion = async () => {
   return Promise.resolve(result[0]);
 };
 
-exports.setContestantScore = async (guildId, member, value) => {
+exports.increaseContestantScore = async (guildId, member, value) => {
   try {
     var client = await MongoClient.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }); // Connect to Mongo client
     const collection = client.db(process.env.MONGO_DATABASE).collection(process.env.MONGO_CONTESTANT_COLLECTION); // Find database and collection
@@ -23,6 +23,22 @@ exports.setContestantScore = async (guildId, member, value) => {
       { $inc: { "score" : value, "correct_answers": 1 }, $set: { user_tag: member.user.tag } },
       { returnOriginal: false, upsert: true }
     ); // Find contestant from specific server and increment score or create new document
+  } catch (e) {
+    return Promise.reject(e);
+  }
+  client.close();
+  return Promise.resolve(contestant.value);
+};
+
+exports.decreaseContestantScore = async (guildId, member, value) => {
+  try {
+    var client = await MongoClient.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }); // Connect to Mongo client
+    const collection = client.db(process.env.MONGO_DATABASE).collection(process.env.MONGO_CONTESTANT_COLLECTION); // Find database and collection
+    var contestant = await collection.findOneAndUpdate(
+      { server_id: guildId, member_id: member.id },
+      { $inc: { "score" : -1*value, "incorrect_answers": 1 }, $set: { user_tag: member.user.tag } },
+      { returnOriginal: false, upsert: true }
+    ); // Find contestant from specific server and decrement score or create new document
   } catch (e) {
     return Promise.reject(e);
   }

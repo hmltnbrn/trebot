@@ -13,7 +13,7 @@ module.exports = async (channel, guild, answer, value, member, contestantAnswer)
       var similarity = stringSimilarity.compareTwoStrings(stringAnswer, contestantAnswer);
       if(similarity >= 0.6 || checkPartial(stringAnswer.split(' '), contestantAnswer.split(' '))) { // Check for a 60% similarity rating between the contestant's answer and the actual answer OR some words being present
         try {
-          var contestant = await db.setContestantScore(guild.id, member, value);
+          var contestant = await db.increaseContestantScore(guild.id, member, value);
         } catch (e) {
           return Promise.reject(e);
         }
@@ -31,7 +31,19 @@ module.exports = async (channel, guild, answer, value, member, contestantAnswer)
         }});
         return Promise.resolve({ log: "Responding with answer", reset: true });
       }
-      channel.send(`Sorry, ${member.displayName}, that's incorrect.`);
+      try {
+        var contestant = await db.decreaseContestantScore(guild.id, member, value);
+      } catch (e) {
+        return Promise.reject(e);
+      }
+      channel.send({embed: {
+        color: 58,
+        title: `Sorry, ${member.displayName}, that's incorrect.`,
+        description: `${member.displayName}'s cash winnings are now $${contestant.score}`,
+        footer: {
+          text: `Took away $${value} for the incorrect answer`
+        },
+      }});
     }
     else {
       channel.send("The is a mistake, honey.");
