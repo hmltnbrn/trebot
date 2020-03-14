@@ -67,7 +67,7 @@ Commands can be either uppercase or lowercase.
     .trebot q [20|30]
     ```
 
-2. Guess the answer of a previously generated question. Once the answer is correctly guessed, it will be automatically revealed and the score for the winning contestant will be increased. Will not work with timed questions. (**BETA** -- will have false negatives/positives):
+2. Guess the answer of a previously generated question. Once the answer is correctly guessed, it will be automatically revealed and the score for the winning contestant will be increased. If the answer is incorrectly guessed, the score with decrease. Will not work with timed questions. (**BETA** -- will have false negatives/positives):
 
     ```
     .trebot answer <answer text>
