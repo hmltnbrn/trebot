@@ -7,10 +7,7 @@ module.exports = async (channel, answer) => {
     channel.send({embed: {
       color: 0x060CE9,
       title: "Beep beep beep!",
-      fields: [{
-        name: "Correct Answer",
-        value: markdown
-      }]
+      description: markdown
     }});
     return Promise.resolve("Responding with answer");
   }
