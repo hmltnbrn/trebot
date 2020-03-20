@@ -23,7 +23,7 @@ module.exports = async (channel, args) => {
     }
     else {
       channel.send({embed: {
-        color: 58,
+        color: 0x060CE9,
         title: `${data.category} for ${data.value || 'the whole ballgame'}`,
         description: data.round,
         fields: [{

@@ -18,7 +18,7 @@ module.exports = async (channel, guild, answer, value, member, contestantAnswer)
           return Promise.reject(e);
         }
         channel.send({embed: {
-          color: 58,
+          color: 0x4caf50,
           title: `${member.displayName} is correct!`,
           description: `The answer is ${markdown}`,
           fields: [{
@@ -37,7 +37,7 @@ module.exports = async (channel, guild, answer, value, member, contestantAnswer)
         return Promise.reject(e);
       }
       channel.send({embed: {
-        color: 58,
+        color: 0xf44336,
         title: `Sorry, ${member.displayName}, that's incorrect.`,
         description: `${member.displayName}'s cash winnings are now $${contestant.score}`,
         footer: {
