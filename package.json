@@ -4,6 +4,9 @@
   "description": "Jeopardy Discord bot",
   "license": "MIT",
   "main": "index.js",
+  "engines" : {
+    "node" : ">=12.7.0"
+  },
   "author": {
     "name": "Brian Hamilton",
     "email": "hmltnbrn@gmail.com",
@@ -21,7 +24,7 @@
   },
   "dependencies": {
     "compression": "^1.7.3",
-    "discord.js": "^11.6.1",
+    "discord.js": "^12.2.0",
     "dotenv-safe": "^8.2.0",
     "express": "^4.16.3",
     "moment": "^2.22.2",
@@ -29,7 +32,7 @@
     "path": "^0.12.7",
     "remove-markdown": "^0.3.0",
     "string-similarity": "^4.0.1",
-    "turndown": "^5.0.3",
+    "turndown": "^6.0.0",
     "upndown": "^2.1.0"
   }
 }

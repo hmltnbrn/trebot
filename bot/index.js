@@ -30,7 +30,7 @@ client.on('message', asyncWrap(async msg => {
 
   // Ask a question
   if(args[0] === 'question' || args[0] === 'q') {
-    var { answer, value, log } = await commands.question(msg.channel, args);
+    const { answer, value, log } = await commands.question(msg.channel, args);
     randomAnswer[msg.channel.id] = { answer, value };
     console.log(log);
   }
@@ -38,23 +38,25 @@ client.on('message', asyncWrap(async msg => {
   // Get an answer
   else if (args[0] === 'answer' || args[0] === 'a') {
     if(args[1]) { // If a user supplied an answer
-      var { log, reset } = await commands.contestantAnswer(msg.channel, msg.guild, randomAnswer[msg.channel.id].answer, randomAnswer[msg.channel.id].value, msg.member, args.slice(1).join(' '));
+      const { log, reset } = await commands.contestantAnswer(msg.channel, msg.guild, randomAnswer[msg.channel.id].answer, randomAnswer[msg.channel.id].value, msg.member, args.slice(1).join(' '));
       if(reset) randomAnswer[msg.channel.id] = "";
+      console.log(log);
     }
     else {
-      var log = await commands.answer(msg.channel, randomAnswer[msg.channel.id].answer);
+      const log = await commands.answer(msg.channel, randomAnswer[msg.channel.id].answer);
       randomAnswer[msg.channel.id] = "";
+      console.log(log);
     }
-    console.log(log);
   }
 
   else if(args[0] === 'score' || args[0] === 's') {
-    var log = await commands.score(msg.channel, msg.guild);
+    const log = await commands.score(msg.channel, msg.guild);
+    console.log(log);
   }
 
   // Ask for help
   else if (args[0] === 'help' || args[0] === 'h') {
-    var log = await commands.help(msg.channel);
+    const log = await commands.help(msg.channel);
     console.log(log);
   }
 

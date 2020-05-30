@@ -6,11 +6,11 @@ const db = require('../../db');
 
 module.exports = async (channel, guild, answer, value, member, contestantAnswer) => {
   if(answer) {
-    var turndownService = new TurndownService()
-    var markdown = turndownService.turndown(answer); // Convert HTML to markdown
+    const turndownService = new TurndownService()
+    const markdown = turndownService.turndown(answer); // Convert HTML to markdown
     if(contestantAnswer) {
-      var stringAnswer = removeMd(markdown).toLowerCase();
-      var similarity = stringSimilarity.compareTwoStrings(stringAnswer, contestantAnswer);
+      const stringAnswer = removeMd(markdown).toLowerCase();
+      const similarity = stringSimilarity.compareTwoStrings(stringAnswer, contestantAnswer);
       if(similarity >= 0.6 || checkPartial(stringAnswer.split(' '), contestantAnswer.split(' '))) { // Check for a 60% similarity rating between the contestant's answer and the actual answer OR some words being present
         try {
           var contestant = await db.increaseContestantScore(guild.id, member, value);
@@ -23,10 +23,10 @@ module.exports = async (channel, guild, answer, value, member, contestantAnswer)
           description: `The answer is ${markdown}`,
           fields: [{
             name: "-----------",
-            value: `${member.displayName}'s cash winnings are now $${contestant.score}`
+            value: `${member.displayName}'s cash winnings are now $${contestant.score.toLocaleString()}`
           }],
           footer: {
-            text: `Awarded $${value} for the correct answer`
+            text: `Awarded $${value.toLocaleString()} for the correct answer`
           },
         }});
         return Promise.resolve({ log: "Responding with answer", reset: true });
@@ -46,7 +46,7 @@ module.exports = async (channel, guild, answer, value, member, contestantAnswer)
       }});
     }
     else {
-      channel.send("The is a mistake, honey.");
+      channel.send("There is a mistake, honey.");
       return Promise.resolve({ log: "No answer provided", reset: false });
     }
     return Promise.resolve({ log: "Responding with correctness", reset: false });
@@ -58,9 +58,9 @@ module.exports = async (channel, guild, answer, value, member, contestantAnswer)
 }
 
 const checkPartial = (answerArr, contestantAnswerArr) => {
-  var correctNum = 0;
-  for(var i = 0; i < answerArr.length; i++) {
-    for(var j = 0; j < contestantAnswerArr.length; j++) {
+  let correctNum = 0;
+  for(let i = 0; i < answerArr.length; i++) {
+    for(let j = 0; j < contestantAnswerArr.length; j++) {
       if(stringSimilarity.compareTwoStrings(answerArr[i], contestantAnswerArr[j]) >= 0.8) {
         correctNum++;
       }

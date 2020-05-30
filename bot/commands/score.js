@@ -7,8 +7,15 @@ module.exports = async (channel, guild) => {
     return Promise.reject(e);
   }
   let scoreText = contestants.map(c => {
-    return `${c.user_tag} -- $${c.score} (${c.correct_answers || 0} correct|${c.incorrect_answers || 0} incorrect)`;
+    return {
+      name: c.user_tag,
+      value: `$${c.score.toLocaleString()} (${c.correct_answers || 0}-${c.incorrect_answers || 0})`
+    }
   });
-  channel.send(contestants.length > 0 ? scoreText.join('\n') : "No one's played yet, honey.");
+  channel.send(contestants.length === 0 ? "No one's played yet, honey." : {embed: {
+    color: 0x060CE9,
+    title: "Scoreboard",
+    fields: scoreText
+  }});
   return Promise.resolve("Responding with score");
 }
