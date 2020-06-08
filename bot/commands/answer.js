@@ -2,8 +2,8 @@ const TurndownService = require('turndown')
 
 module.exports = async (channel, answer) => {
   if(answer) {
-    var turndownService = new TurndownService();
-    var markdown = turndownService.turndown(answer); // Convert HTML to markdown
+    const turndownService = new TurndownService();
+    const markdown = turndownService.turndown(answer); // Convert HTML to markdown
     channel.send({embed: {
       color: 0x060CE9,
       title: "Beep beep beep!",
