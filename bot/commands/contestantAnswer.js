@@ -34,7 +34,7 @@ module.exports = async (channel, guild, answer, value, member, contestantAnswer)
           title: `Sorry, ${member.displayName}, that's incorrect.`,
           description: `${member.displayName}'s cash winnings are now $${contestant.score}`,
           footer: {
-            text: `Took away $${value} for the incorrect answer`
+            text: `Took away $${value.toLocaleString()} for the incorrect answer`
           },
         }});
       }
