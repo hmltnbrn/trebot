@@ -4,8 +4,8 @@
   "description": "Jeopardy Discord bot",
   "license": "MIT",
   "main": "index.js",
-  "engines" : {
-    "node" : ">=12.7.0"
+  "engines": {
+    "node": ">=12.7.0"
   },
   "author": {
     "name": "Brian Hamilton",

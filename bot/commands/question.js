@@ -6,13 +6,6 @@ const db = require('../../db');
 module.exports = async (channel, args) => {
   try {
     const question = await db.getRandomQuestion(); // Get random question from Mongo questionbase
-    let valueNumber = 0;
-    if(question.value && question.value[0] === 'D') {
-      valueNumber = parseInt(question.value.replace('DD: $', '').replace(',', ''));
-    }
-    else {
-      valueNumber = question.value ? parseInt(question.value.replace('$', '').replace(',', '')) : 1000;
-    }
     let und = new upndown();
     und.convert(question.question, (err, markdown) => { // Convert HTML to markdown
       if(err) {
@@ -21,7 +14,7 @@ module.exports = async (channel, args) => {
       else {
         channel.send({embed: {
           color: 0x060CE9,
-          title: `${question.category} for ${question.value || 'the whole ballgame'}`,
+          title: `${question.category} for ${question.value ? "$" + question.value : 'the whole ballgame'}`,
           description: question.round,
           fields: [{
             name: "-".repeat(question.round.length),
@@ -43,7 +36,7 @@ module.exports = async (channel, args) => {
       });
     }
     else {
-      return Promise.resolve({ answer: question.answer, value: isNaN(valueNumber) ? 0 : valueNumber, log: "Responding with question" });
+      return Promise.resolve({ answer: question.answer, value: question.value || 1000, log: "Responding with question" });
     }
   } catch (e) {
     return Promise.reject(e);

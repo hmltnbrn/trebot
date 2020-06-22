@@ -51,10 +51,16 @@ He helps you play Jeopardy on Discord. Over 350,000 trivia questions available.
 4. To scrape the entire archive of the site, run the following command. This will create a collection in your database with all questions leading up to the most recent episode. It will take some time (between one and two hours).
 
     ```
-    python scrape_archive.py
+    python scrape.py -a
     ```
 
-5. Update your .env file with the correct values for each variable.
+5. You can also scrape only specific seasons by running the command below. The example shown is for seasons 1 through 10 (will include 10).
+
+    ```
+    python scrape.py -s 1 10
+    ```
+
+6. Update your .env file with the correct values for each variable.
 
 ## Discord Usage
 
