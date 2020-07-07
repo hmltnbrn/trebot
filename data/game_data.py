@@ -114,10 +114,10 @@ class Category(object):
             answer = self.answer_div.findAll("div")[index] if self.answer_div is not None else self.html[i].find("div")
             if(value and question and answer):
                 if(question.get_text() != "="):
-                    clues.append(Clue(value.find(text=True), question.get_text(), BeautifulSoup(answer["onmouseover"], "lxml").find(class_="correct_response").get_text(), answer["onmouseover"], i, self.round, self.before_double))
+                    clues.append(Clue(value.find(text=True), question.decode_contents(), BeautifulSoup(answer["onmouseover"], "lxml").find(class_="correct_response").get_text(), answer["onmouseover"], i, self.round, self.before_double))
             elif(question and answer):
                 if(question.get_text() != "="):
-                    clues.append(Clue("", question.get_text(), BeautifulSoup(answer["onmouseover"], "lxml").find(class_=re.compile("correct")).get_text(), answer["onmouseover"], i, self.round, self.before_double))
+                    clues.append(Clue("", question.decode_contents(), BeautifulSoup(answer["onmouseover"], "lxml").find(class_=re.compile("correct")).get_text(), answer["onmouseover"], i, self.round, self.before_double))
         return clues
 
     def get_data(self):

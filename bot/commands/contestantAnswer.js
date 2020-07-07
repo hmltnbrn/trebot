@@ -32,7 +32,7 @@ module.exports = async (channel, guild, answer, value, member, contestantAnswer)
         channel.send({embed: {
           color: 0xf44336,
           title: `Sorry, ${member.displayName}, that's incorrect.`,
-          description: `${member.displayName}'s cash winnings are now $${contestant.score}`,
+          description: `${member.displayName}'s cash winnings are now $${contestant.score.toLocaleString()}`,
           footer: {
             text: `Took away $${value.toLocaleString()} for the incorrect answer`
           },
