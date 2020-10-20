@@ -73,25 +73,32 @@ Commands can be either uppercase or lowercase.
     .trebot q [20|30]
     ```
 
-2. Guess the answer of a previously generated question. Once the answer is correctly guessed, it will be automatically revealed and the score for the winning contestant will be increased. If the answer is incorrectly guessed, the score with decrease. Will not work with timed questions. (**BETA** -- will have false negatives/positives):
+2. Show up to three different hints. You have to type the command three separate times to get all the clues:
+
+    ```
+    .trebot clue
+    .trebot c
+    ```
+
+3. Guess the answer of a previously generated question. Once the answer is correctly guessed, it will be automatically revealed and the score for the winning contestant will be increased. If the answer is incorrectly guessed, the score with decrease. Will not work with timed questions. (**BETA** -- will have false negatives/positives):
 
     ```
     .trebot answer <answer text>
     .trebot a <answer text>
     ```
 
-3. Reveal answer of previously generated question:
+4. Reveal answer of previously generated question:
 
     ```
     .trebot answer
     .trebot a
     ```
 
-4. Reveal score for each contestant in the server:
+5. Reveal score for each contestant in the server:
 
     ```
     .trebot score
     .trebot s
     ```
 
-5. **.trebot** can also be shortened to **.tre** or **.t**.
+6. **.trebot** can also be shortened to **.tre** or **.t**.

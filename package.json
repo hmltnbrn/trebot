@@ -1,6 +1,6 @@
 {
   "name": "trebot",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Jeopardy Discord bot",
   "license": "MIT",
   "main": "index.js",
@@ -23,16 +23,15 @@
     "start": "node index"
   },
   "dependencies": {
-    "compression": "^1.7.3",
-    "discord.js": "^12.2.0",
+    "compression": "^1.7.4",
+    "discord.js": "^12.4.0",
     "dotenv-safe": "^8.2.0",
-    "express": "^4.16.3",
-    "moment": "^2.22.2",
-    "mongodb": "^3.5.4",
+    "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "mongodb": "^3.6.2",
     "path": "^0.12.7",
     "remove-markdown": "^0.3.0",
-    "string-similarity": "^4.0.1",
-    "turndown": "^6.0.0",
-    "upndown": "^2.1.0"
+    "string-similarity": "^4.0.2",
+    "turndown": "^7.0.0"
   }
 }

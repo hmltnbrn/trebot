@@ -30,7 +30,7 @@ client.on('message', async msg => {
     // Ask a question
     if(args[0] === 'question' || args[0] === 'q') {
       const { answer, value, log } = await commands.question(msg.channel, args);
-      currentAnswer[msg.channel.id] = { answer, value };
+      currentAnswer[msg.channel.id] = { answer, value, clues: [] };
       console.log(log);
     }
 
@@ -48,6 +48,13 @@ client.on('message', async msg => {
       }
     }
 
+    // Ask for a clue
+    else if(args[0] === 'clue' || args[0] === 'c') {
+      const log = await commands.clue(msg.channel, currentAnswer[msg.channel.id].answer, currentAnswer[msg.channel.id].clues, currentAnswer[msg.channel.id].clues ? currentAnswer[msg.channel.id].clues.length + 1 : 1);
+      console.log(log);
+    }
+
+    // See the score
     else if(args[0] === 'score' || args[0] === 's') {
       const log = await commands.score(msg.channel, msg.guild);
       console.log(log);
