@@ -42,7 +42,7 @@ const numberOfWords = (str) => {
 }
 
 // Shuffle letters around in words in a string
-const shuffleLetters = (str) => {
+const shuffleWordLetters = (str) => {
 	const arrWords = str.split(" ");
   const result = [];
   for(let i=0; i<arrWords.length; i++) {
@@ -57,6 +57,19 @@ const shuffleLetters = (str) => {
     result.push(a.join(""));
   }
   return result.join(" ");
+};
+
+// Shuffle letters around in an entire string
+const shuffleLetters = (str) => {
+  let a = str.split("");
+  let n = a.length;
+  for(let j = n - 1; j > 0; j--) {
+    let k = Math.floor(Math.random() * (j + 1));
+    let tmp = a[j];
+    a[j] = a[k];
+    a[k] = tmp;
+  }
+  return a.join("").trim();
 };
 
 // Reveal letters in every index position (showIndex number)

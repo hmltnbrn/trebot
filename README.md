@@ -73,7 +73,7 @@ Commands can be either uppercase or lowercase.
     .trebot q [20|30]
     ```
 
-2. Show up to three different hints. You have to type the command three separate times to get all the clues:
+2. Show up to three different hints. You have to type the command three separate times to get all the clues. Will remove 25% for each clue from the winning value:
 
     ```
     .trebot clue

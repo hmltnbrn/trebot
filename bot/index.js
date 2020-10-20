@@ -37,7 +37,7 @@ client.on('message', async msg => {
     // Get an answer
     else if (args[0] === 'answer' || args[0] === 'a') {
       if(args[1]) { // If a user supplied an answer
-        const { log, reset } = await commands.contestantAnswer(msg.channel, msg.guild, currentAnswer[msg.channel.id].answer, currentAnswer[msg.channel.id].value, msg.member, args.slice(1).join(' '));
+        const { log, reset } = await commands.contestantAnswer(msg.channel, msg.guild, currentAnswer[msg.channel.id].answer, currentAnswer[msg.channel.id].value, msg.member, args.slice(1).join(' '), currentAnswer[msg.channel.id].clues ? currentAnswer[msg.channel.id].clues.length : 0);
         if(reset) currentAnswer[msg.channel.id] = "";
         console.log(log);
       }
