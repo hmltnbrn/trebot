@@ -1,15 +1,15 @@
 module.exports = async (channel, answer, currentClues, clueNumber) => {
   if(answer) {
-    const clueNames = ["Number of Words", "Shuffled Letters", "Revealed Letters"];
+    const clueNames = ["Shuffled Letters", "Revealed Letters", "More Revealed Letters"];
     const answerText = removeTags(answer);
     if(clueNumber === 1) {
-      currentClues.push(numberOfWords(answerText));
-    }
-    else if(clueNumber === 2) {
       currentClues.push(shuffleLetters(answerText));
     }
-    else if(clueNumber === 3) {
+    else if(clueNumber === 2) {
       currentClues.push(revealLetters(answerText, 3));
+    }
+    else if(clueNumber === 3) {
+      currentClues.push(revealLetters(answerText, 2));
     }
     const clueText = currentClues.map((clue, index) => {
       return {
@@ -39,7 +39,7 @@ const removeTags = (str) => {
 const numberOfWords = (str) => {
   const arrWords = str.split(" ");
   return `There ${arrWords.length > 1 ? 'are' : 'is'} ${arrWords.length} word${arrWords.length > 1 ? 's' : ''} in the answer`;
-}
+};
 
 // Shuffle letters around in words in a string
 const shuffleWordLetters = (str) => {
@@ -69,7 +69,7 @@ const shuffleLetters = (str) => {
     a[j] = a[k];
     a[k] = tmp;
   }
-  return a.join("").trim();
+  return a.join("").toLowerCase().trim();
 };
 
 // Reveal letters in every index position (showIndex number)
