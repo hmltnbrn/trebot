@@ -1,88 +1,47 @@
-module.exports = async (channel, answer, currentClues, clueNumber) => {
-  if(answer) {
-    const clueNames = ["Shuffled Letters", "Revealed Letters", "More Revealed Letters"];
-    const answerText = removeTags(answer);
-    if(clueNumber === 1) {
-      currentClues.push(shuffleLetters(answerText));
-    }
-    else if(clueNumber === 2) {
-      currentClues.push(revealLetters(answerText, 3));
-    }
-    else if(clueNumber === 3) {
-      currentClues.push(revealLetters(answerText, 2));
-    }
-    const clueText = currentClues.map((clue, index) => {
-      return {
-        name: clueNames[index],
-        value: clue
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
+const storage = require('node-persist');
+
+const helpers = require('../helpers');
+
+module.exports = {
+  data: new SlashCommandBuilder()
+    .setName('clue')
+    .setDescription('A clue to help you out'),
+  async execute(interaction) {
+    const { answer, value, clues } = await storage.getItem(interaction.channelId);
+    const currentClues = clues || [];
+    const clueNumber = currentClues.length + 1;
+
+    if (answer) {
+      const clueNames = ['Shuffled Letters', 'Revealed Letters', 'More Revealed Letters'];
+      const answerText = helpers.removeTags(answer);
+
+      if (clueNumber === 1) {
+        currentClues.push(helpers.shuffleLetters(answerText));
+      } else if (clueNumber === 2) {
+        currentClues.push(helpers.revealLetters(answerText, 3));
+      } else if (clueNumber === 3) {
+        currentClues.push(helpers.revealLetters(answerText, 2));
       }
-    });
-    channel.send({embed: {
-      color: 0x060CE9,
-      title: "Clues",
-      fields: clueText
-    }});
-    return Promise.resolve("Responding with clue");
-  }
-  else {
-    channel.send("You need a question first, honey.");
-    return Promise.resolve("No saved question");
-  }
-}
 
-// Remove HTML tags from string
-const removeTags = (str) => {
-  return str.replace( /(<([^>]+)>)/ig, '');
-};
+      const clueText = currentClues.map((clue, index) => {
+        return {
+          name: clueNames[index],
+          value: clue,
+        };
+      });
 
-// Tell number of words in a string
-const numberOfWords = (str) => {
-  const arrWords = str.split(" ");
-  return `There ${arrWords.length > 1 ? 'are' : 'is'} ${arrWords.length} word${arrWords.length > 1 ? 's' : ''} in the answer`;
-};
+      const embed = new MessageEmbed()
+        .setColor('#060CE9')
+        .setTitle('Clues')
+        .setFields(clueText);
 
-// Shuffle letters around in words in a string
-const shuffleWordLetters = (str) => {
-	const arrWords = str.split(" ");
-  const result = [];
-  for(let i=0; i<arrWords.length; i++) {
-    let a = arrWords[i].split("");
-    let n = a.length;
-    for(let j = n - 1; j > 0; j--) {
-        let k = Math.floor(Math.random() * (j + 1));
-        let tmp = a[j];
-        a[j] = a[k];
-        a[k] = tmp;
+      await storage.setItem(interaction.channelId, { answer: answer, value: value, clues: currentClues });
+
+      return await interaction.reply({ embeds: [embed] });
+    } else {
+      return await interaction.reply('You need a question first, honey.');
     }
-    result.push(a.join(""));
-  }
-  return result.join(" ");
-};
-
-// Shuffle letters around in an entire string
-const shuffleLetters = (str) => {
-  let a = str.split("");
-  let n = a.length;
-  for(let j = n - 1; j > 0; j--) {
-    let k = Math.floor(Math.random() * (j + 1));
-    let tmp = a[j];
-    a[j] = a[k];
-    a[k] = tmp;
-  }
-  return a.join("").toLowerCase().trim();
-};
-
-// Reveal letters in every index position (showIndex number)
-const revealLetters = (str, showIndex) => {
-  const arrWords = str.split(" ");
-  const result = [];
-  for(let i=0; i<arrWords.length; i++) {
-    const splitStr = arrWords[i].split("");
-    let newStr = "";
-    for(let j=0; j<splitStr.length; j++) {
-      newStr += j%showIndex === 0 ? splitStr[j] : '#';
-    }
-    result.push(newStr);
-  }
-  return result.join(" ");
+  },
 };

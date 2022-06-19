@@ -50,3 +50,6 @@ Thumbs.db
 
 # Compiled Python
 *.pyc
+
+#node-persist
+/.node-persist

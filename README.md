@@ -22,13 +22,19 @@ He helps you play Jeopardy on Discord. Over 350,000 trivia questions available.
 
 7. Copy the contents of .env.example and create a new .env file with the contents pasted inside. Put the appropriate values in their spots. The URI should be provided by MongoDB Atlas or whatever database you are using.
 
-8. Type and run the command below to run the server.
+8. Type and run the command below to generate the commands in the approproate guild.
+
+    ```
+    yarn commands
+    ```
+
+9. Type and run the command below to run the server.
 
     ```
     yarn start
     ```
 
-9. Check Discord. Your bot should now be running.
+10. Check Discord. Your bot should now be running.
 
 ## J-Archive HTML Scraping
 
@@ -66,39 +72,32 @@ He helps you play Jeopardy on Discord. Over 350,000 trivia questions available.
 
 Commands can be either uppercase or lowercase.
 
-1. Generate random question with optional 20 or 30 second timer:
+1. Generate random question:
 
     ```
-    .trebot question [20|30]
-    .trebot q [20|30]
+    /question
     ```
 
 2. Show up to three different hints. You have to type the command three separate times to get all the clues. Will remove 25% for each clue from the winning value:
 
     ```
-    .trebot clue
-    .trebot c
+    /clue
     ```
 
 3. Guess the answer of a previously generated question. Once the answer is correctly guessed, it will be automatically revealed and the score for the winning contestant will be increased. If the answer is incorrectly guessed, the score with decrease. Will not work with timed questions. (**BETA** -- will have false negatives/positives):
 
     ```
-    .trebot answer <answer text>
-    .trebot a <answer text>
+    /answer <answer text>
     ```
 
 4. Reveal answer of previously generated question:
 
     ```
-    .trebot answer
-    .trebot a
+    /answer
     ```
 
 5. Reveal score for each contestant in the server:
 
     ```
-    .trebot score
-    .trebot s
+    /score
     ```
-
-6. **.trebot** can also be shortened to **.tre** or **.t**.

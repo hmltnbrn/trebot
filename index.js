@@ -8,15 +8,14 @@ app.use(compression());
 
 app.use(express.static(__dirname + '/www/'));
 
-require('dotenv-safe').config({
-  allowEmptyValues: true
-});
+require('dotenv').config();
+
+require('node-persist').init();
 
 require('./bot');
 
 app.listen(port);
 
-//Handle Main Page
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname + '/www/index.html'));
 });

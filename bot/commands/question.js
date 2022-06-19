@@ -1,38 +1,32 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 const TurndownService = require('turndown');
+const storage = require('node-persist');
 
 const db = require('../../db');
 
-module.exports = async (channel, args) => {
-  try {
-    const question = await db.getRandomQuestion(); // Get random question from Mongo questionbase
-    const turndownService = new TurndownService()
-    const markdown = turndownService.turndown(question.question); // Convert HTML to markdown
-    channel.send({embed: {
-      color: 0x060CE9,
-      title: `${question.category} for ${question.value ? "$" + question.value : 'the whole ballgame'}`,
-      description: question.round,
-      fields: [{
-        name: "-".repeat(question.round.length),
-        value: markdown
-      }],
-      footer: {
-        text: `${moment(question.air_date).format("MMMM Do, YYYY")} (Season ${question.season} -- Episode #${question.show_number})`
-      },
-      url: question.link
-    }});
-    if(args[1] === '20' || args[1] === '30') { // Check for answer timer
-      return await new Promise(resolve => {
-        setTimeout(() => {
-          channel.send(question.answer);
-          return resolve({ answer: "", value: 0, log: "Responding with question and answer" })
-        }, parseInt(args[1])*1000);
-      });
-    }
-    else {
-      return Promise.resolve({ answer: question.answer, value: question.value || 1000, log: "Responding with question" });
-    }
-  } catch (e) {
-    return Promise.reject(e);
-  }
-}
+module.exports = {
+  data: new SlashCommandBuilder()
+    .setName('question')
+    .setDescription('Alex Trebot reading you a question'),
+  async execute(interaction) {
+    const question = await db.getRandomQuestion();
+    const turndownService = new TurndownService();
+    const markdown = turndownService.turndown(question.question);
+
+    const embed = new MessageEmbed()
+      .setColor('#060CE9')
+      .setTitle(`${question.category} for ${question.value ? '$' + question.value : 'the whole ballgame'}`)
+      .setURL(question.link)
+      .setDescription(question.round)
+      .setFields([{
+        name: '-'.repeat(question.round.length),
+        value: markdown,
+      }])
+      .setFooter({ text: `${moment(question.air_date).format('MMMM Do, YYYY')} (Season ${question.season} -- Episode #${question.show_number})` });
+
+    await storage.setItem(interaction.channelId, { answer: question.answer, value: question.value || 1000, clues: [] });
+    return await interaction.reply({ embeds: [embed] });
+  },
+};

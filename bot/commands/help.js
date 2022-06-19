@@ -1,32 +1,43 @@
-const prefix = process.env.BOT_PREFIX || '.';
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
+
 const helpText = [
   {
-    name: `${prefix}trebot [q]uestion <20|30>`,
-    value: 'Question with optional 20 or 30 second timer'
+    name: '/question',
+    value: 'Random question from Jeopardy! history',
   },
   {
-    name: `${prefix}trebot [c]lue`,
-    value: 'Option to show up to three different clues (will remove 25% for each clue from the winning value)'
+    name: '/clue',
+    value: 'Show up to three different clues (will remove 25% for each clue from the winning value)',
   },
   {
-    name: `${prefix}trebot [a]nswer <answer text>`,
-    value: 'Try to answer previous non-timed question (will reveal answer and increase the score for the contestant if answered correctly/decrease if answered incorrectly)'
+    name: '/answer <answer text>',
+    value: 'Try to answer previous question (will reveal answer and increase the score for the contestant if answered correctly/decrease if answered incorrectly)',
   },
   {
-    name: `${prefix}trebot [a]nswer`,
-    value: 'Answer to previously asked question'
+    name: '/answer',
+    value: 'Answer to previously asked question',
   },
   {
-    name: `${prefix}trebot [s]core`,
-    value: 'Get the score of the server\'s game'
-  }
+    name: '/score',
+    value: 'Get the score of the server\'s game',
+  },
+  {
+    name: 'GitHub repo',
+    value: 'https://github.com/hmltnbrn/trebot',
+  },
 ];
 
-module.exports = async channel => {
-  channel.send({embed: {
-    color: 0x060CE9,
-    title: "Help",
-    fields: helpText
-  }});
-  return Promise.resolve("Responding with help");
-}
+module.exports = {
+  data: new SlashCommandBuilder()
+    .setName('help')
+    .setDescription('Stop. Get some help.'),
+  async execute(interaction) {
+    const embed = new MessageEmbed()
+      .setColor('#060CE9')
+      .setTitle('Help')
+      .setFields(helpText);
+
+    return await interaction.reply({ embeds: [embed] });
+  },
+};
