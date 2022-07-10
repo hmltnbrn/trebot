@@ -14,7 +14,7 @@ module.exports = {
     .setDescription('The judges will check if you were right')
     .addStringOption(option => option.setName('submission').setDescription('The user answer')),
   async execute(interaction) {
-    const contestantAnswer = interaction.options.getString('submission');
+    const submission = interaction.options.getString('submission');
     const { answer, value, clues } = await storage.getItem(interaction.channelId);
 
     if (!answer) {
@@ -24,7 +24,7 @@ module.exports = {
     const turndownService = new TurndownService();
     const markdown = turndownService.turndown(answer);
 
-    if (!contestantAnswer) {
+    if (!submission) {
       const embed = new MessageEmbed()
         .setColor('#060CE9')
         .setTitle('Beep beep beep!')
@@ -35,11 +35,12 @@ module.exports = {
       return await interaction.reply({ embeds: [embed] });
     }
 
+    const contestantAnswer = submission.toLowerCase();
     const stringAnswer = removeMd(markdown).toLowerCase();
     const similarity = stringSimilarity.compareTwoStrings(stringAnswer, contestantAnswer);
     const clueAmount = clues.length || 0;
 
-    if (similarity >= 0.6 || helpers.checkPartial(stringAnswer.split(' '), contestantAnswer.split(' '))) {
+    if (stringAnswer === contestantAnswer || similarity >= 0.6 || helpers.checkPartial(stringAnswer.split(' '), contestantAnswer.split(' '))) {
       const valuePerc = 0.25 * (4 - clueAmount);
       const givenValue = clueAmount > 0 ? value * valuePerc : value;
       const contestant = await db.increaseContestantScore(interaction.guildId, interaction.member, givenValue);
