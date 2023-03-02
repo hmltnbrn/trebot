@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const moment = require('moment');
 const TurndownService = require('turndown');
 const storage = require('node-persist');
@@ -15,7 +14,7 @@ module.exports = {
     const turndownService = new TurndownService();
     const markdown = turndownService.turndown(question.question);
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setColor('#060CE9')
       .setTitle(`${question.category} for ${question.value ? '$' + question.value : 'the whole ballgame'}`)
       .setURL(question.link)

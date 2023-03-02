@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const db = require('../../db');
 
@@ -24,7 +23,7 @@ module.exports = {
       return await interaction.reply('No one\'s played yet, honey.');
     }
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setColor('#060CE9')
       .setTitle('Scoreboard')
       .setFields(scoreText);

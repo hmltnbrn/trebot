@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const storage = require('node-persist');
 
 const helpers = require('../helpers');
@@ -32,7 +31,7 @@ module.exports = {
         };
       });
 
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setColor('#060CE9')
         .setTitle('Clues')
         .setFields(clueText);

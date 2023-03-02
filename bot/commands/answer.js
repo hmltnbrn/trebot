@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const TurndownService = require('turndown');
 const removeMd = require('remove-markdown');
 const stringSimilarity = require('string-similarity');
@@ -25,7 +24,7 @@ module.exports = {
     const markdown = turndownService.turndown(answer);
 
     if (!submission) {
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setColor('#060CE9')
         .setTitle('Beep beep beep!')
         .setDescription(markdown);
@@ -45,7 +44,7 @@ module.exports = {
       const givenValue = clueAmount > 0 ? value * valuePerc : value;
       const contestant = await db.increaseContestantScore(interaction.guildId, interaction.member, givenValue);
 
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setColor('#4CAF50')
         .setTitle(`${interaction.member.displayName} is correct!`)
         .setDescription(`The answer is "${markdown}"`)
@@ -61,7 +60,7 @@ module.exports = {
     }
     const contestant = await db.decreaseContestantScore(interaction.guildId, interaction.member, value);
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setColor('#F44336')
       .setTitle(`Sorry, ${interaction.member.displayName}, that's incorrect.`)
       .setDescription(`The answer is not "${contestantAnswer}"`)

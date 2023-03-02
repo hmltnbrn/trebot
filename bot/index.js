@@ -1,8 +1,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Intents } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, Events } = require('discord.js');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
@@ -14,24 +14,31 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 
-client.once('ready', () => {
+client.once(Events.ClientReady, () => {
   console.log('Connected');
   console.log('Logged in as: ');
   console.log(`${client.user.username} - (${client.user.id})`);
 });
 
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isCommand()) return;
+client.on(Events.InteractionCreate, async interaction => {
+  if (!interaction.isChatInputCommand()) return;
 
-  const command = client.commands.get(interaction.commandName);
+  const command = interaction.client.commands.get(interaction.commandName);
 
-  if (!command) return;
+  if (!command) {
+    console.error(`No command matching ${interaction.commandName} was found.`);
+    return;
+  }
 
   try {
     await command.execute(interaction);
   } catch (error) {
     console.error(error);
-    await interaction.reply({ content: 'There\'s been an error, honey.' });
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+    } else {
+      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    }
   }
 });
 

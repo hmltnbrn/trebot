@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const helpText = [
   {
@@ -33,7 +32,7 @@ module.exports = {
     .setName('help')
     .setDescription('Stop. Get some help.'),
   async execute(interaction) {
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setColor('#060CE9')
       .setTitle('Help')
       .setFields(helpText);
