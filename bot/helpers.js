@@ -5,7 +5,12 @@ exports.checkPartial = (answerArr, contestantAnswerArr) => {
   let correctNum = 0;
   for (let i = 0; i < answerArr.length; i++) {
     for (let j = 0; j < contestantAnswerArr.length; j++) {
-      if (stringSimilarity.compareTwoStrings(answerArr[i], contestantAnswerArr[j]) >= 0.8) {
+      if (
+        stringSimilarity.compareTwoStrings(
+          answerArr[i],
+          contestantAnswerArr[j],
+        ) >= 0.8
+      ) {
         correctNum++;
       }
     }
@@ -15,9 +20,7 @@ exports.checkPartial = (answerArr, contestantAnswerArr) => {
 };
 
 // Remove HTML tags from string
-exports.removeTags = (str) => {
-  return str.replace(/(<([^>]+)>)/ig, '');
-};
+exports.removeTags = (str) => str.replace(/(<([^>]+)>)/gi, '');
 
 // Tell number of words in a string
 exports.numberOfWords = (str) => {

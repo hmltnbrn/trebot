@@ -7,11 +7,13 @@ const helpText = [
   },
   {
     name: '/clue',
-    value: 'Show up to three different clues (will remove 25% for each clue from the winning value)',
+    value:
+      'Show up to three different clues (will remove 25% for each clue from the winning value)',
   },
   {
     name: '/answer <answer text>',
-    value: 'Try to answer previous question (will reveal answer and increase the score for the contestant if answered correctly/decrease if answered incorrectly)',
+    value:
+      'Try to answer previous question (will reveal answer and increase the score for the contestant if answered correctly/decrease if answered incorrectly)',
   },
   {
     name: '/answer',
@@ -19,7 +21,7 @@ const helpText = [
   },
   {
     name: '/score',
-    value: 'Get the score of the server\'s game',
+    value: "Get the score of the server's game",
   },
   {
     name: 'GitHub repo',

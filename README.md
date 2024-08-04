@@ -14,9 +14,9 @@ He helps you play Jeopardy on Discord. Over 350,000 trivia questions available.
 
 5. Use terminal/cmd/powershell/something similar to navigate to the directory with the files and type the command below. This will automatically install all dependencies listed in the **package.json** file.
 
-    ```
-    yarn install
-    ```
+   ```
+   yarn install
+   ```
 
 6. Follow the instructions below for scraping J-Archive and creating your database.
 
@@ -24,15 +24,15 @@ He helps you play Jeopardy on Discord. Over 350,000 trivia questions available.
 
 8. Type and run the command below to generate the commands in the approproate guild.
 
-    ```
-    yarn commands
-    ```
+   ```
+   yarn commands
+   ```
 
 9. Type and run the command below to run the server.
 
-    ```
-    yarn start
-    ```
+   ```
+   yarn start
+   ```
 
 10. Check Discord. Your bot should now be running.
 
@@ -42,29 +42,29 @@ He helps you play Jeopardy on Discord. Over 350,000 trivia questions available.
 
 2. Navigate into the /data directory.
 
-    ```
-    cd data
-    ```
+   ```
+   cd data
+   ```
 
 3. Set up a **credentials.json** file in this directory with a URI field. It uses the same URI as that of the .env file from above.
 
-    ```json
-    {
-      "uri": "<URI HERE>"
-    }
-    ```
+   ```json
+   {
+     "uri": "<URI HERE>"
+   }
+   ```
 
 4. To scrape the entire archive of the site, run the following command. This will create a collection in your database with all questions leading up to the most recent episode. It will take some time (between one and two hours).
 
-    ```
-    python scrape.py -a
-    ```
+   ```
+   python scrape.py -a
+   ```
 
 5. You can also scrape only specific seasons by running the command below. The example shown is for seasons 1 through 10 (will include 10).
 
-    ```
-    python scrape.py -s 1 10
-    ```
+   ```
+   python scrape.py -s 1 10
+   ```
 
 6. Update your .env file with the correct values for each variable.
 
@@ -74,30 +74,30 @@ Commands can be either uppercase or lowercase.
 
 1. Generate random question:
 
-    ```
-    /question
-    ```
+   ```
+   /question
+   ```
 
 2. Show up to three different hints. You have to type the command three separate times to get all the clues. Will remove 25% for each clue from the winning value:
 
-    ```
-    /clue
-    ```
+   ```
+   /clue
+   ```
 
 3. Guess the answer of a previously generated question. Once the answer is correctly guessed, it will be automatically revealed and the score for the winning contestant will be increased. If the answer is incorrectly guessed, the score with decrease. Will not work with timed questions. (**BETA** -- will have false negatives/positives):
 
-    ```
-    /answer <answer text>
-    ```
+   ```
+   /answer <answer text>
+   ```
 
 4. Reveal answer of previously generated question:
 
-    ```
-    /answer
-    ```
+   ```
+   /answer
+   ```
 
 5. Reveal score for each contestant in the server:
 
-    ```
-    /score
-    ```
+   ```
+   /score
+   ```

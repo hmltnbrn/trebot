@@ -8,12 +8,18 @@ module.exports = {
     .setName('clue')
     .setDescription('A clue to help you out'),
   async execute(interaction) {
-    const { answer, value, clues } = await storage.getItem(interaction.channelId);
+    const { channelId } = interaction;
+
+    const { answer, value, clues } = await storage.getItem(channelId);
     const currentClues = clues || [];
     const clueNumber = currentClues.length + 1;
 
     if (answer) {
-      const clueNames = ['Shuffled Letters', 'Revealed Letters', 'More Revealed Letters'];
+      const clueNames = [
+        'Shuffled Letters',
+        'Revealed Letters',
+        'More Revealed Letters',
+      ];
       const answerText = helpers.removeTags(answer);
 
       if (clueNumber === 1) {
@@ -36,7 +42,11 @@ module.exports = {
         .setTitle('Clues')
         .setFields(clueText);
 
-      await storage.setItem(interaction.channelId, { answer: answer, value: value, clues: currentClues });
+      await storage.setItem(channelId, {
+        answer: answer,
+        value: value,
+        clues: currentClues,
+      });
 
       return await interaction.reply({ embeds: [embed] });
     } else {

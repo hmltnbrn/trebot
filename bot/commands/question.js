@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const moment = require('moment');
+const dayjs = require('dayjs');
 const TurndownService = require('turndown');
 const storage = require('node-persist');
 
@@ -10,22 +10,44 @@ module.exports = {
     .setName('question')
     .setDescription('Alex Trebot reading you a question'),
   async execute(interaction) {
-    const question = await db.getRandomQuestion();
+    const { channelId } = interaction;
+
+    const {
+      category,
+      value,
+      link,
+      round,
+      air_date,
+      season,
+      answer,
+      show_number,
+      question,
+    } = await db.getRandomQuestion();
     const turndownService = new TurndownService();
-    const markdown = turndownService.turndown(question.question);
+    const markdown = turndownService.turndown(question);
 
     const embed = new EmbedBuilder()
       .setColor('#060CE9')
-      .setTitle(`${question.category} for ${question.value ? '$' + question.value : 'the whole ballgame'}`)
-      .setURL(question.link)
-      .setDescription(question.round)
-      .setFields([{
-        name: '-'.repeat(question.round.length),
-        value: markdown,
-      }])
-      .setFooter({ text: `${moment(question.air_date).format('MMMM Do, YYYY')} (Season ${question.season} -- Episode #${question.show_number})` });
+      .setTitle(`${category} for ${value ? '$' + value : 'the whole ballgame'}`)
+      .setURL(link)
+      .setDescription(round)
+      .setFields([
+        {
+          name: '-'.repeat(round.length),
+          value: markdown,
+        },
+      ])
+      .setFooter({
+        text: `${dayjs(air_date).format(
+          'MMMM Do, YYYY',
+        )} (Season ${season} -- Episode #${show_number})`,
+      });
 
-    await storage.setItem(interaction.channelId, { answer: question.answer, value: question.value || 1000, clues: [] });
+    await storage.setItem(channelId, {
+      answer,
+      value: value || 1000,
+      clues: [],
+    });
     return await interaction.reply({ embeds: [embed] });
   },
 };

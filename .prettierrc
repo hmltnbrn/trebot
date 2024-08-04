@@ -1,0 +1,12 @@
+{
+    "semi": true,
+    "arrowParens": "always",
+    "singleQuote": true,
+    "tabWidth": 2,
+    "plugins": [],
+    "pluginSearchDirs": false,
+    "organizeImportsSkipDestructiveCodeActions": true,
+    "printWidth": 80,
+    "trailingComma": "all",
+    "endOfLine": "auto"
+}
