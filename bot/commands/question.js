@@ -5,6 +5,8 @@ const storage = require('node-persist');
 
 const db = require('../../db');
 
+dayjs.extend(advancedFormat);
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('question')
