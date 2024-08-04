@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const dayjs = require('dayjs');
+const advancedFormat = require('dayjs/plugin/advancedFormat');
 const TurndownService = require('turndown');
 const storage = require('node-persist');
 
